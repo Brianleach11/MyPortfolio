@@ -1,5 +1,42 @@
 <h3>Navbar</h3>
 
-@code {
+@code 
+{
+    //public and camel case because C# properties are methods
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
     
+    private const string HomePageUri = "/";
+        private const string BlogPageUri = "/blog";
+
+    private bool IsPageActive(string pageToCheckUri)
+    {
+        //skip(3) to remove https://domainname/
+        string[] currentUriSplitBetweenSlashes = NavigationManager.Uri.Split('/').Skip(3).ToArray();
+
+        if (pageToCheckUri == HomePageUri)
+        {
+            if (currentUriSplitBetweenSlashes.Last().Length == 0)
+            {
+                return true;
+            }
+        }
+        else
+        {
+            string[] pageToCheckUriSplitBetweenSlashes = pageToCheckUri.Split('/').Skip(1).ToArray();
+
+            foreach (string currentUriPart in currentUriSplitBetweenSlashes)
+            {
+                foreach (string pageToCheckUriPart in pageToCheckUriSplitBetweenSlashes)
+                {
+                    if (pageToCheckUriPart == currentUriPart)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        //if the code gets here, pageToCheckUri is not the active page. SO return false
+        return false;
+    }
 }
