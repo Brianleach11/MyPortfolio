@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using BlazorApp1.Static;
 using Shared.Models;
 
 namespace BlazorApp1.Services;
@@ -26,9 +27,15 @@ internal sealed class InMemoryDatabaseCache
         }
     }
 
+    private bool _gettingCategoriesFromDatabaseAndCache = false;
     internal async Task GetCategoriesFromDatabaseAndCache()
     {
-        _categories = await _httpClient.GetFromJsonAsync<List<Category>>("endpoint");
+        if (_gettingCategoriesFromDatabaseAndCache == false)
+        {
+            _gettingCategoriesFromDatabaseAndCache = true;
+            _categories = await _httpClient.GetFromJsonAsync<List<Category>>(APIEndpoint.s_categories);
+            _gettingCategoriesFromDatabaseAndCache = false;
+        }
     }
 
     internal event Action OnCategoriesDataChanged;
