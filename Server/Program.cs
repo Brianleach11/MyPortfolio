@@ -30,9 +30,18 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
+    //app.UseSwagger();
+    //app.UseSwaggerUI();
 }
+
+app.UseSwagger();
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "BriansDevPortfolioServer API");
+    options.RoutePrefix = String.Empty;
+    
+});
 
 app.UseHttpsRedirection();
 
