@@ -47,7 +47,7 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: dotnet Build and Publish
-        run: 
+        run: |
           cd Server
           dotnet build --configuration Release
           dotnet publish -c Release -o ${{env.DOTNET_ROOT}}\Server
